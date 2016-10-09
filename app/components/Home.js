@@ -1,6 +1,26 @@
 var React = require('react');
 var apiHelpers = require('../utils/apiHelpers')
 
+var dataDump = [
+  {data:{current_observation:
+    {display_location:
+      {city: 'London'},
+      temp_c: 10,
+      weather: "Sunny",
+      humidity: '85%'
+    }
+  }
+},
+{data:{current_observation:
+  {display_location: {city: 'New York'},
+  temp_c: 22,
+  weather: "Sunny",
+  humidity: '50%'
+}
+}
+}
+];
+
 var CityName = React.createClass({
   render: function () {
     return (
@@ -33,6 +53,26 @@ var CityHumidity = React.createClass({
   }
 });
 
+var Cities =  React.createClass({
+  render: function(){
+    var cityNodes = this.props.data.map(function(city){
+      return(
+        <div className="col-sm-6">
+        < CityName city={city.data.current_observation.display_location.city}/>
+        < CityTemp temperature={city.data.current_observation.temp_c}/>
+        < CityWeather conditions={city.data.current_observation.weather}/>
+        < CityHumidity humidity={city.data.current_observation.relative_humidity}/>
+        </div>
+      );
+    });
+    return (
+      <div>
+      {cityNodes}
+      </div>
+    );
+  }
+});
+
 var Home = React.createClass({
   getInitialState: function() {
     return {
@@ -44,30 +84,24 @@ var Home = React.createClass({
     }
   },
   fetchData: function() {
-      apiHelpers.getCityInfo()
-      .then(function (response){
-        console.log(response)
-        this.setState({
-          city: response.data.current_observation.display_location.city,
-          conditions: response.data.current_observation.weather,
-          temperature: response.data.current_observation.temp_c,
-          humidity: response.data.current_observation.relative_humidity,
-        })
-      }.bind(this))
-    },
+    apiHelpers.getCityInfo()
+    .then(function (response){
+      this.setState({ data: dataDump
+      })
+    }.bind(this))
+  },
   componentWillMount: function(){
     this.fetchData();
   },
   render: function () {
+    console.log(dataDump)
     return (
-      <div className="weather-box">
-        < CityName city={this.state.city}/>
-        < CityTemp temperature={this.state.temperature}/>
-        < CityWeather conditions={this.state.conditions}/>
-        < CityHumidity humidity={this.state.humidity}/>
+      <div className="container">
+      <h1>Favorites</h1>
+      <Cities data={dataDump} />
       </div>
     )
   }
-})
+});
 
 module.exports = Home;
