@@ -5,25 +5,24 @@ var apiHelpers = require('./utils/apiHelpers')
 var Weather = React.createClass({
   getInitialState: function() {
     return {
-      weather: '',
-      temp: 0,
-      humidity: 0,
-      wind: 0
+      city: ''
     }
   },
   fetchData: function() {
       apiHelpers.getCityInfo()
       .then(function (response){
-        console.log(response)
-      })
+        console.log(response.data.current_observation.display_location.city)
+        this.setState({
+          city: response.data.current_observation.display_location.city
+        })
+      }.bind(this))
     },
   componentWillMount: function(){
     this.fetchData();
   },
-
   render: function () {
     return (
-      <div>Hello</div>
+      <h1>Welcome to: {this.state.city}</h1>
     )
   }
 })
