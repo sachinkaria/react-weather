@@ -1,46 +1,45 @@
 var React = require('react');
 var apiHelpers = require('../utils/apiHelpers')
+var classNames = require('classnames');
 
-var dataDump = [
-  {data:{current_observation:
-    {display_location:
-      {city: 'London'},
-      temp_c: 10,
-      weather: "Sunny",
-      humidity: '85%'
-    }
-  }
-},
-{data:{current_observation:
-  {display_location: {city: 'New York'},
-  temp_c: 22,
-  weather: "Sunny",
-  humidity: '50%'
-}
-}
-}
-];
+var weatherData = [];
+var weatherStyle={color: "White",
+fontSize: "5vw",
+margin:"0 auto",
+maxWidth: "50%",
+minWidth:"50%",
+maxHeight:"50%",
+float:"left",
+textAlign: "center"};
 
 var CityName = React.createClass({
   render: function () {
+    var titleStyle={color:"white", textAlign:"center", fontSize:"60px", minWidth:"100%"}
     return (
-      <h1> {this.props.city} </h1>
+      <h1 style={titleStyle} className="city"> {this.props.city} </h1>
     );
   }
 });
 
 var CityTemp = React.createClass({
   render: function () {
+    var temperatureStyle={float: "right",color: "Blue", fontSize:"60px", maxWidth:"50%"};
     return (
-      <h2> Temperature - {this.props.temperature}&deg;C </h2>
+      <div style={weatherStyle}>
+      <span className="temp-number">{this.props.temperature}&deg;</span>
+      </div>
     );
   }
 });
 
 var CityWeather = React.createClass({
   render: function () {
+    var weatherClass = ('wi wi-wu-' + this.props.weather.replace(/\s/g, '').toLowerCase());
+
     return (
-      <h2> Weather - {this.props.conditions} </h2>
+      <div className="weather" style={weatherStyle}>
+      <i className={weatherClass}></i>
+      </div>
     );
   }
 });
@@ -48,7 +47,9 @@ var CityWeather = React.createClass({
 var CityHumidity = React.createClass({
   render: function () {
     return (
-      <h2> Humidity {this.props.humidity} </h2>
+      <div style={weatherStyle}>
+      <span>{this.props.humidity}</span>
+      </div>
     );
   }
 });
@@ -56,11 +57,15 @@ var CityHumidity = React.createClass({
 var Cities =  React.createClass({
   render: function(){
     var cityNodes = this.props.data.map(function(city){
+      var tempRounded = Math.round(city.data.current_observation.temp_c)
+      var boxStyle = {backgroundColor: "blue"}
+
       return(
-        <div className="col-sm-6">
+        <div style={boxStyle} key={city.data.current_observation.display_location.city} className="col-sm-4">
         < CityName city={city.data.current_observation.display_location.city}/>
-        < CityTemp temperature={city.data.current_observation.temp_c}/>
-        < CityWeather conditions={city.data.current_observation.weather}/>
+        <hr></hr>
+        < CityWeather weather={city.data.current_observation.weather}/>
+        < CityTemp temperature={tempRounded}/>
         < CityHumidity humidity={city.data.current_observation.relative_humidity}/>
         </div>
       );
@@ -76,29 +81,31 @@ var Cities =  React.createClass({
 var Home = React.createClass({
   getInitialState: function() {
     return {
-      city: '',
-      conditions: '',
-      temperature: 0,
-      humidity: 0,
-      wind: 0,
+      data: []
     }
   },
   fetchData: function() {
     apiHelpers.getCityInfo()
     .then(function (response){
-      this.setState({ data: dataDump
+      weatherData.push(response)
+      this.setState({ data: weatherData
       })
-    }.bind(this))
+      console.log(this.state.data)
+    }.bind(this), 10000)
   },
   componentWillMount: function(){
     this.fetchData();
   },
+  componentDidMount: function(){
+    window.setInterval(function(){
+      this.fetchData();
+    }.bind(this), 10000);
+  },
   render: function () {
-    console.log(dataDump)
+
     return (
       <div className="container">
-      <h1>Favorites</h1>
-      <Cities data={dataDump} />
+      <Cities data={this.state.data} />
       </div>
     )
   }
