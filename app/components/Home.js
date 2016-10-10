@@ -71,7 +71,6 @@ var Cities =  React.createClass({
     var cityNodes = this.props.data.map(function(city){
       var tempRounded = Math.round(city.data.current_observation.temp_c)
       getBoxStyle(tempRounded)
-      console.log(city);
       return(
         <div style={boxStyle} key={city.data.current_observation.display_location.city} className="row-fluid">
         < CityName city={city.data.current_observation.display_location.city}/>

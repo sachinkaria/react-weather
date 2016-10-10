@@ -1,4 +1,5 @@
 var React = require('react');
+var apiHelpers = require('../utils/apiHelpers')
 
 var cityTime = {color: "White",
                   float: "right",
@@ -37,7 +38,6 @@ var CurrentTime = React.createClass({
     }.bind(this), 1000);
   },
   render: function() {
-
     return(
       <div>
       <span style={cityTime}>{this.state.hours}:{this.state.minutes}</span>
@@ -49,16 +49,24 @@ var CurrentTime = React.createClass({
 var SearchCity = React.createClass ({
   getInitialState: function() {
     return {
-      value: "Hello"
+      value: "",
+      results: []
     }
   },
+  searchAPI: function(){
+    apiHelpers.searchCity()
+    .then(function(response){
+      console.log(response)
+    })
+  },
    handleChange(event) {
-    this.setState({value: event.target.value});
-    console.log(this.state.value);
+    this.setState({value: event.target.value})
+    this.searchAPI()
+    console.log(this.state.value)
   },
   render: function() {
     return (
-      <input type="text" value={this.state.value} onChange={this.handleChange}/>
+      <input className="form-control" type="text" value={this.state.value} onChange={this.handleChange}/>
     )
   }
 });
