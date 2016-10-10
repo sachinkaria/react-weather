@@ -1,5 +1,9 @@
 var React = require('react');
 
+var cityTime = {color: "White",
+                  float: "right",
+                fontSize: "50px"};
+
 var CurrentTime = React.createClass({
   setTime: function(){
 
@@ -35,9 +39,26 @@ var CurrentTime = React.createClass({
   render: function() {
 
     return(
-      <div className="city-row" ref="cityRow">
-      <span className="city-time">{this.state.hours}:{this.state.minutes}:{this.state.seconds}</span>
+      <div>
+      <span style={cityTime}>{this.state.hours}:{this.state.minutes}</span>
       </div>
+    )
+  }
+});
+
+var SearchCity = React.createClass ({
+  getInitialState: function() {
+    return {
+      value: "Hello"
+    }
+  },
+   handleChange(event) {
+    this.setState({value: event.target.value});
+    console.log(this.state.value);
+  },
+  render: function() {
+    return (
+      <input type="text" value={this.state.value} onChange={this.handleChange}/>
     )
   }
 });
@@ -46,12 +67,11 @@ var Navbar = React.createClass({
   render: function(){
     return(
       <div>
-      <div className="navbar navbar-default">
-      <div className="navbar-brand">
-      <CurrentTime UTCOffset="1" />
-      </div>
-      </div>
-      {this.props.children}
+        <div className="navbar navbar-dark bg-inverse">
+        <SearchCity />
+        <CurrentTime UTCOffset="1" />
+        </div>
+        {this.props.children}
       </div>
     )
   }

@@ -2,21 +2,24 @@ var React = require('react');
 var apiHelpers = require('../utils/apiHelpers')
 var classNames = require('classnames');
 
-var weatherData = [];
+var weatherData = [{data:{current_observation:{display_location: {city: "Nairobi"},temp_c: 25.5, weather: "Sunny"}}},
+{data:{current_observation:{display_location: {city: "London"},temp_c: 5.5, weather: "Cloudy"}}}];
+
 var weatherStyle={color: "White",
-fontSize: "5vw",
-margin:"0 auto",
-maxWidth: "50%",
-minWidth:"50%",
-maxHeight:"50%",
-float:"left",
-textAlign: "center"};
+                  fontSize: "70px",
+                  margin:"0 auto",
+                  maxWidth: "100%",
+                  minWidth:"100%",
+                  maxHeight:"50%",
+                  float:"left",
+                  textAlign: "center",
+                  paddingBottom: "10px"};
 
 var boxStyle = {backgroundColor: "blue"}
 
 var CityName = React.createClass({
   render: function () {
-    var titleStyle={color:"white", textAlign:"center", minWidth:"100%", maxWidth:"100%"}
+    var titleStyle={color:"white", textAlign:"center", minWidth:"100%", maxWidth:"100%", padding:"20px"}
     return (
       <h1 style={titleStyle} className="city"> {this.props.city} </h1>
     );
@@ -25,7 +28,6 @@ var CityName = React.createClass({
 
 var CityTemp = React.createClass({
   render: function () {
-    var temperatureStyle={float: "right",color: "Blue", fontSize:"60px", maxWidth:"50%"};
     return (
       <div style={weatherStyle}>
       <span className="temp-number">{this.props.temperature}&deg;</span>
@@ -46,22 +48,22 @@ var CityWeather = React.createClass({
   }
 });
 
-var CityHumidity = React.createClass({
-  render: function () {
-    return (
-      <div style={weatherStyle}>
-      <span>{this.props.humidity}</span>
-      </div>
-    );
-  }
-});
+// var CityHumidity = React.createClass({
+//   render: function () {
+//     return (
+//       <div style={weatherStyle}>
+//       <span><i className="wi wi-raindrop"></i>{this.props.humidity}</span>
+//       </div>
+//     );
+//   }
+// });
 
 function getBoxStyle(temperature){
-  if (temperature < 0) {boxStyle = {backgroundColor: "#417BFF"}}
-    else if (temperature < 15) {boxStyle = {backgroundColor: "#799AF4"}}
-      else if (temperature < 25) {boxStyle = {backgroundColor: "#FFAC63"}}
-        else if (temperature < 35) {boxStyle = {backgroundColor: "#FF6F39"}}
-          else {boxStyle = {backgroundColor: "#EA4145"}}
+  if (temperature < 0) {boxStyle = {backgroundColor: "#417BFF", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+    else if (temperature < 15) {boxStyle = {backgroundColor: "#799AF4", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+      else if (temperature < 25) {boxStyle = {backgroundColor: "#FFAC63", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+        else if (temperature < 35) {boxStyle = {backgroundColor: "#FF6F39", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+          else {boxStyle = {backgroundColor: "#EA4145", opacity: 0.9, borderRadius:"5px"}}
 };
 
 var Cities =  React.createClass({
@@ -69,14 +71,12 @@ var Cities =  React.createClass({
     var cityNodes = this.props.data.map(function(city){
       var tempRounded = Math.round(city.data.current_observation.temp_c)
       getBoxStyle(tempRounded)
-      console.log(tempRounded);
+      console.log(city);
       return(
-        <div style={boxStyle} key={city.data.current_observation.display_location.city} className="col-sm-4">
+        <div style={boxStyle} key={city.data.current_observation.display_location.city} className="row-fluid">
         < CityName city={city.data.current_observation.display_location.city}/>
-        <hr></hr>
         < CityWeather weather={city.data.current_observation.weather}/>
         < CityTemp temperature={tempRounded}/>
-        < CityHumidity humidity={city.data.current_observation.relative_humidity}/>
         </div>
       );
     });
@@ -112,7 +112,7 @@ var Home = React.createClass({
   },
   render: function () {
     return (
-      <div className="container">
+      <div>
       <Cities data={this.state.data} />
       </div>
     )
