@@ -12,9 +12,11 @@ maxHeight:"50%",
 float:"left",
 textAlign: "center"};
 
+var boxStyle = {backgroundColor: "blue"}
+
 var CityName = React.createClass({
   render: function () {
-    var titleStyle={color:"white", textAlign:"center", fontSize:"60px", minWidth:"100%"}
+    var titleStyle={color:"white", textAlign:"center", minWidth:"100%", maxWidth:"100%"}
     return (
       <h1 style={titleStyle} className="city"> {this.props.city} </h1>
     );
@@ -54,12 +56,20 @@ var CityHumidity = React.createClass({
   }
 });
 
+function getBoxStyle(temperature){
+  if (temperature < 0) {boxStyle = {backgroundColor: "#417BFF"}}
+    else if (temperature < 15) {boxStyle = {backgroundColor: "#799AF4"}}
+      else if (temperature < 25) {boxStyle = {backgroundColor: "#FFAC63"}}
+        else if (temperature < 35) {boxStyle = {backgroundColor: "#FF6F39"}}
+          else {boxStyle = {backgroundColor: "#EA4145"}}
+};
+
 var Cities =  React.createClass({
   render: function(){
     var cityNodes = this.props.data.map(function(city){
       var tempRounded = Math.round(city.data.current_observation.temp_c)
-      var boxStyle = {backgroundColor: "blue"}
-
+      getBoxStyle(tempRounded)
+      console.log(tempRounded);
       return(
         <div style={boxStyle} key={city.data.current_observation.display_location.city} className="col-sm-4">
         < CityName city={city.data.current_observation.display_location.city}/>
@@ -90,8 +100,7 @@ var Home = React.createClass({
       weatherData.push(response)
       this.setState({ data: weatherData
       })
-      console.log(this.state.data)
-    }.bind(this), 10000)
+    }.bind(this))
   },
   componentWillMount: function(){
     this.fetchData();
@@ -99,10 +108,9 @@ var Home = React.createClass({
   componentDidMount: function(){
     window.setInterval(function(){
       this.fetchData();
-    }.bind(this), 10000);
+    }.bind(this), 30000);
   },
   render: function () {
-
     return (
       <div className="container">
       <Cities data={this.state.data} />
