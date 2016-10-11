@@ -46,15 +46,40 @@ var CurrentTime = React.createClass({
   }
 });
 
+var Results =  React.createClass({
+  render: function(){
+    console.log(this.props.data)
+    var resultNodes = this.props.data.map(function(result){
+      return(
+      <a className="dropdown-item"> {result.name} </a>
+    );
+  });
+    return (
+      <div>
+      {resultNodes}
+      </div>
+    );
+  }
+});
+
+var SearchInput = React.createClass({
+  render: function () {
+    return (
+      <input className="form-control" type="text" value={this.props.value} onChange={this.props.action}/>
+    );
+  }
+});
+
 var SearchCity = React.createClass ({
   getInitialState: function() {
     return {
       value: "",
-      results: "hello"
+      results: []
     }
   },
   searchAPI: function(string){
-    this.setState({results: apiHelpers.searchCity(string)})
+    this.setState({results: apiHelpers.searchCity(string).splice(1,3)})
+    console.log(this.state.results)
   },
    handleChange(event) {
     this.setState({value: event.target.value})
@@ -62,7 +87,10 @@ var SearchCity = React.createClass ({
   },
   render: function() {
     return (
-      <input className="form-control" type="text" value={this.state.value} onChange={this.handleChange}/>
+      <div>
+      <SearchInput value={this.state.value} action={this.handleChange} />
+      <Results data={this.state.results} />
+      </div>
     )
   }
 });
