@@ -1,6 +1,11 @@
 var React = require('react');
 var apiHelpers = require('../utils/apiHelpers')
 var classNames = require('classnames');
+var Masonry = require('react-masonry-component');
+
+var masonryOptions = {
+    transitionDuration: 1
+};
 
 var weatherData = [{data:{current_observation:{display_location: {city: "Nairobi"},temp_c: 25.5, weather: "Sunny"}}},
 {data:{current_observation:{display_location: {city: "London"},temp_c: 5.5, weather: "Cloudy"}}}];
@@ -72,11 +77,18 @@ var Cities =  React.createClass({
       var tempRounded = Math.round(city.data.current_observation.temp_c)
       getBoxStyle(tempRounded)
       return(
-        <div style={boxStyle} key={city.data.current_observation.display_location.city} className="row-fluid">
+        <Masonry
+                className="row"
+                elementType={'div'}
+                options={masonryOptions}
+                disableImagesLoaded={false}
+                updateOnEachImageLoad={false}
+                style={boxStyle}
+                key={city.data.current_observation.display_location.city}>
         < CityName city={city.data.current_observation.display_location.city}/>
         < CityWeather weather={city.data.current_observation.weather}/>
         < CityTemp temperature={tempRounded}/>
-        </div>
+        </Masonry>
       );
     });
     return (
@@ -93,20 +105,27 @@ var Home = React.createClass({
       data: []
     }
   },
-  fetchData: function() {
-    apiHelpers.getCityInfo()
+  fetchData: function(city) {
+    apiHelpers.getCityInfo(city)
     .then(function (response){
+      console.log(response)
       weatherData.push(response)
       this.setState({ data: weatherData
       })
     }.bind(this))
   },
+  fetchCurrentLocation: function(){
+    apiHelpers.currentLocation()
+    .then(function (response){
+      this.fetchData(response.data.location.l)
+    }.bind(this))
+  },
   componentWillMount: function(){
-    this.fetchData();
+    this.fetchCurrentLocation();
   },
   componentDidMount: function(){
     window.setInterval(function(){
-      this.fetchData();
+      this.fetchCurrentLocation();
     }.bind(this), 30000);
   },
   render: function () {

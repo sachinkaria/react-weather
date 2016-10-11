@@ -14,11 +14,13 @@ A beautiful, interactive weather dashboard giving a user the weather in their fa
 - Rendered weather cards with API data
 - Dynamic styling on weather cards
 - Added current time to Navigation bar
+- Allow users to search for cities
 
 
 #### Improvements
 
-- Allow users to search for cities
+- Weather in current city card
+
 - Allow user to add city weather card
 - Allow user to delete city weather cards
 - Allow user to sign and sign out
