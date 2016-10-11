@@ -50,19 +50,15 @@ var SearchCity = React.createClass ({
   getInitialState: function() {
     return {
       value: "",
-      results: []
+      results: "hello"
     }
   },
-  searchAPI: function(){
-    apiHelpers.searchCity()
-    .then(function(response){
-      console.log(response)
-    })
+  searchAPI: function(string){
+    this.setState({results: apiHelpers.searchCity(string)})
   },
    handleChange(event) {
     this.setState({value: event.target.value})
-    this.searchAPI()
-    console.log(this.state.value)
+    this.searchAPI(this.state.value)
   },
   render: function() {
     return (
