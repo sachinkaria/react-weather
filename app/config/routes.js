@@ -9,8 +9,7 @@ var Home = require("../components/Home");
 
 var routes = (
   <Router history={hashHistory}>
-    <Route path="/" component={Navbar}>
-      <IndexRoute component={Home} />
+    <Route path="/" component={Home}>
     </Route>
   </Router>
 );

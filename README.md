@@ -7,6 +7,7 @@ A beautiful, interactive weather dashboard giving a user the weather in their fa
 - Webpack
 - Bootstrap
 - Rails API
+- Flux
 
 #### Completed
 
@@ -15,11 +16,9 @@ A beautiful, interactive weather dashboard giving a user the weather in their fa
 - Dynamic styling on weather cards
 - Added current time to Navigation bar
 - Allow users to search for cities
-
+- Weather in current city card
 
 #### Improvements
-
-- Weather in current city card
 
 - Allow user to add city weather card
 - Allow user to delete city weather cards
