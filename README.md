@@ -17,10 +17,13 @@ A beautiful, interactive weather dashboard giving a user the weather in their fa
 - Added current time to Navigation bar
 - Allow users to search for cities
 - Weather in current city card
+- Allow user to add city weather card
+
 
 #### Improvements
 
-- Allow user to add city weather card
+- Refactor Code
+- Feature and Unit Tests
 - Allow user to delete city weather cards
 - Allow user to sign and sign out
 - Allow user to store favourite cities

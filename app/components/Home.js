@@ -2,7 +2,7 @@ var React = require('react');
 var apiHelpers = require('../utils/apiHelpers')
 var classNames = require('classnames');
 var Masonry = require('react-masonry-component');
-var weatherData = [{data:{current_observation:{display_location: {city: "Nairobi"},temp_c: 25.5, weather: "Sunny"}}}];
+var weatherData = [];
 
 var masonryOptions = {
     transitionDuration: 1
@@ -15,7 +15,8 @@ var weatherStyle={color: "White",
                   maxHeight:"50%",
                   float:"left",
                   textAlign: "center",
-                  paddingBottom: "10px"};
+                  paddingBottom: "10px"
+                };
 
 var boxStyle = {backgroundColor: "blue"}
 
@@ -27,16 +28,28 @@ var dropdowns = {color: "White",
                   backgroundColor: "#222",
                   float: "left",
                   fontSize: "20px",
-                  marginRight: "30px"}
+                  marginRight: "30px",
+                textAlign: "center"}
 
 var navbar = {marginBottom: "50px"}
+var searchBar = {backgroundColor: "#373737",
+                borderColor:"#373737",
+                color:"white",
+                fontSize: "20px"}
+
+var titleStyle={color:"white",
+                textAlign:"center",
+                minWidth:"100%",
+                maxWidth:"100%",
+                padding:"20px",
+                fontSize:"40px"}
 
 
 function getBoxStyle(temperature){
-  if (temperature < 0) {boxStyle = {backgroundColor: "#417BFF", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+  if (temperature < 5) {boxStyle = {backgroundColor: "#417BFF", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
     else if (temperature < 15) {boxStyle = {backgroundColor: "#799AF4", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
-      else if (temperature < 25) {boxStyle = {backgroundColor: "#FFAC63", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
-        else if (temperature < 35) {boxStyle = {backgroundColor: "#FF6F39", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+      else if (temperature < 22) {boxStyle = {backgroundColor: "#FFAC63", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+        else if (temperature < 30) {boxStyle = {backgroundColor: "#FF6F39", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
           else {boxStyle = {backgroundColor: "#EA4145", opacity: 0.9, borderRadius:"5px"}}
 };
 
@@ -89,7 +102,6 @@ var Results =  React.createClass({
   fetchData: function(city) {
     apiHelpers.getCityInfo(city)
     .then(function (response){
-      console.log(response)
       weatherData.push(response)
       this.setState({ data: weatherData
       })
@@ -115,7 +127,7 @@ var Results =  React.createClass({
 var SearchInput = React.createClass({
   render: function () {
     return (
-      <input className="form-control" type="text" value={this.props.value} onChange={this.props.action}/>
+      <input className="form-control" type="text" placeholder="Search for a City" style={searchBar} value={this.props.value} onChange={this.props.action}/>
     );
   }
 });
@@ -128,7 +140,7 @@ var SearchCity = React.createClass ({
     }
   },
   searchAPI: function(string){
-    this.setState({results: apiHelpers.searchCity(string).splice(1,3)})
+    this.setState({results: apiHelpers.searchCity(string).splice(0,3)})
   },
   handleChange(event) {
     this.setState({value: event.target.value})
@@ -146,9 +158,8 @@ var SearchCity = React.createClass ({
 
 var CityName = React.createClass({
   render: function () {
-    var titleStyle={color:"white", textAlign:"center", minWidth:"100%", maxWidth:"100%", padding:"20px"}
     return (
-      <h1 style={titleStyle} className="city"> {this.props.city} </h1>
+      <p style={titleStyle} className="city"> {this.props.city} </p>
     );
   }
 });
@@ -182,7 +193,7 @@ var Cities =  React.createClass({
       getBoxStyle(tempRounded)
       return(
         <Masonry
-                className="col-md-6"
+                className="col-md-3"
                 elementType={'div'}
                 options={masonryOptions}
                 disableImagesLoaded={false}
