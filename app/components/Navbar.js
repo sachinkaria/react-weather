@@ -2,8 +2,16 @@ var React = require('react');
 var apiHelpers = require('../utils/apiHelpers')
 
 var cityTime = {color: "White",
-                  float: "right",
-                fontSize: "50px"};
+                float: "right",
+                fontSize: "50px"}
+
+var dropdowns = {color: "White",
+                  backgroundColor: "#222",
+                  float: "left",
+                  fontSize: "20px",
+                  marginRight: "30px"}
+
+var navbar = {marginBottom: "50px"}
 
 var CurrentTime = React.createClass({
   setTime: function(){
@@ -51,12 +59,14 @@ var Results =  React.createClass({
     console.log(this.props.data)
     var resultNodes = this.props.data.map(function(result){
       return(
-      <a className="dropdown-item"> {result.name} </a>
-    );
-  });
+        <a style={dropdowns} className="dropdown-item"> {result.name} </a>
+      );
+    });
     return (
-      <div>
-      {resultNodes}
+      <div className="dropdown open">
+        <div className="dropdown-menu" style={dropdowns}>
+          {resultNodes}
+        </div>
       </div>
     );
   }
@@ -81,15 +91,15 @@ var SearchCity = React.createClass ({
     this.setState({results: apiHelpers.searchCity(string).splice(1,3)})
     console.log(this.state.results)
   },
-   handleChange(event) {
+  handleChange(event) {
     this.setState({value: event.target.value})
     this.searchAPI(this.state.value)
   },
   render: function() {
     return (
       <div>
-      <SearchInput value={this.state.value} action={this.handleChange} />
-      <Results data={this.state.results} />
+        <SearchInput value={this.state.value} action={this.handleChange} />
+        <Results data={this.state.results} />
       </div>
     )
   }
@@ -99,11 +109,11 @@ var Navbar = React.createClass({
   render: function(){
     return(
       <div>
-        <div className="navbar navbar-dark bg-inverse">
-        <SearchCity />
+        <div className="navbar navbar-dark bg-inverse" style={navbar}>
         <CurrentTime UTCOffset="1" />
+          <SearchCity />
         </div>
-        {this.props.children}
+          {this.props.children}
       </div>
     )
   }

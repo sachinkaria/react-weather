@@ -7,8 +7,7 @@ var masonryOptions = {
     transitionDuration: 1
 };
 
-var weatherData = [{data:{current_observation:{display_location: {city: "Nairobi"},temp_c: 25.5, weather: "Sunny"}}},
-{data:{current_observation:{display_location: {city: "London"},temp_c: 5.5, weather: "Cloudy"}}}];
+var weatherData = [{data:{current_observation:{display_location: {city: "Nairobi"},temp_c: 25.5, weather: "Sunny"}}}];
 
 var weatherStyle={color: "White",
                   fontSize: "70px",
@@ -78,7 +77,7 @@ var Cities =  React.createClass({
       getBoxStyle(tempRounded)
       return(
         <Masonry
-                className="row"
+                className="col-md-6"
                 elementType={'div'}
                 options={masonryOptions}
                 disableImagesLoaded={false}
