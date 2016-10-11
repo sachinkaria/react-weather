@@ -27,3 +27,7 @@ A beautiful, interactive weather dashboard giving a user the weather in their fa
 - Allow user to delete city weather cards
 - Allow user to sign and sign out
 - Allow user to store favourite cities
+
+#### Screenshot
+
+![alt tag][http://imgur.com/a/C2Lna]
