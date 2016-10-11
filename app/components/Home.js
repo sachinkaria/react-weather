@@ -53,7 +53,6 @@ var CurrentTime = React.createClass({
     if( hours.length == 1 ){ hours = "0" + hours; }
 
     var minutes = currentdate.getUTCMinutes();
-
     minutes = minutes + "";
     if( minutes.length == 1 ){ minutes = "0" + minutes; }
 
@@ -98,8 +97,9 @@ var Results =  React.createClass({
   },
   render: function(){
     var resultNodes = this.props.data.map(function(result){
+      var urlString = result.l
       return(
-        <a href="#" key={result.l} style={dropdowns} className="dropdown-item"> {result.name} </a>
+        <a href="#" key={result.l} style={dropdowns} onClick={() => {this.fetchData(urlString)}} className="dropdown-item"> {result.name} </a>
       );
     }.bind(this));
     return (
@@ -242,8 +242,9 @@ var Home = React.createClass({
   },
   componentDidMount: function(){
     window.setInterval(function(){
-      this.fetchCurrentLocation();
-    }.bind(this), 30000);
+      this.setState({ data: weatherData
+      })
+    }.bind(this), 1000);
   },
   render: function () {
     return (
