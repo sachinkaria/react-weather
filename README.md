@@ -2,6 +2,12 @@
 
 A beautiful, interactive weather dashboard giving a user the weather in their favourite cities and the weather in their current city. This is intended to be bookmarked as a browser homepage giving a user a beautiful interface every time they open their browser.
 
+#### To run:
+
+- $ npm install
+- $ bower install
+- npm run start
+
 #### Technologies:
 - ReactJS
 - Webpack
@@ -30,4 +36,4 @@ A beautiful, interactive weather dashboard giving a user the weather in their fa
 
 #### Screenshot
 
-![alt tag][http://imgur.com/a/C2Lna]
+![alt tag](http://imgur.com/a/C2Lna)
