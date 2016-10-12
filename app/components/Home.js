@@ -4,55 +4,57 @@ var classNames = require('classnames');
 var Masonry = require('react-masonry-component');
 var weatherData = [];
 
+//styling
 var masonryOptions = {
-    transitionDuration: 1
+  transitionDuration: 1
 };
 var weatherStyle={color: "White",
-                  fontSize: "70px",
-                  margin:"0 auto",
-                  maxWidth: "100%",
-                  minWidth:"100%",
-                  maxHeight:"50%",
-                  float:"left",
-                  textAlign: "center",
-                  paddingBottom: "10px"
-                };
+fontSize: "70px",
+margin:"0 auto",
+maxWidth: "100%",
+minWidth:"100%",
+maxHeight:"50%",
+float:"left",
+textAlign: "center",
+paddingBottom: "10px"
+};
 
 var boxStyle = {backgroundColor: "blue"}
 
 var cityTime = {color: "White",
-                float: "right",
-                fontSize: "50px"}
+float: "right",
+fontSize: "50px"}
 
 var dropdowns = {color: "White",
-                  backgroundColor: "#222",
-                  float: "left",
-                  fontSize: "20px",
-                  marginRight: "30px",
-                textAlign: "center"}
+backgroundColor: "#222",
+float: "left",
+fontSize: "20px",
+marginRight: "30px",
+textAlign: "center"}
 
 var navbar = {marginBottom: "50px"}
 var searchBar = {backgroundColor: "#373737",
-                borderColor:"#373737",
-                color:"white",
-                fontSize: "20px"}
+borderColor:"#373737",
+color:"white",
+fontSize: "20px"}
 
 var titleStyle={color:"white",
-                textAlign:"center",
-                minWidth:"100%",
-                maxWidth:"100%",
-                padding:"20px",
-                fontSize:"40px"}
+textAlign:"center",
+minWidth:"100%",
+maxWidth:"100%",
+padding:"20px",
+fontSize:"40px"}
 
-
+// dynamic style rendering background colour based on temperature
 function getBoxStyle(temperature){
   if (temperature < 5) {boxStyle = {backgroundColor: "#417BFF", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
-    else if (temperature < 15) {boxStyle = {backgroundColor: "#799AF4", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
-      else if (temperature < 22) {boxStyle = {backgroundColor: "#FFAC63", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
-        else if (temperature < 30) {boxStyle = {backgroundColor: "#FF6F39", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
-          else {boxStyle = {backgroundColor: "#EA4145", opacity: 0.9, borderRadius:"5px"}}
+  else if (temperature < 15) {boxStyle = {backgroundColor: "#799AF4", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+  else if (temperature < 22) {boxStyle = {backgroundColor: "#FFAC63", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+  else if (temperature < 30) {boxStyle = {backgroundColor: "#FF6F39", opacity: 0.9, borderRadius:"5px", minHeight:"300px"}}
+  else {boxStyle = {backgroundColor: "#EA4145", opacity: 0.9, borderRadius:"5px"}}
 };
 
+//current time component
 var CurrentTime = React.createClass({
   setTime: function(){
 
@@ -93,6 +95,27 @@ var CurrentTime = React.createClass({
   }
 });
 
+// search bar
+function SearchInput (props) {
+  return (
+    <input className="form-control" type="text" placeholder="Search for a City" style={searchBar} value={props.value} onChange={props.action}/>
+  );
+}
+
+//rendering navbar
+function Navbar (props){
+  return(
+    <div>
+    <div className="navbar navbar-dark bg-inverse" style={navbar}>
+    <CurrentTime UTCOffset="1" />
+    <SearchCity />
+    </div>
+    {props.children}
+    </div>
+  )
+}
+
+// rendering all search results and adding a result to cards
 var Results =  React.createClass({
   getInitialState: function() {
     return {
@@ -116,22 +139,15 @@ var Results =  React.createClass({
     }.bind(this));
     return (
       <div className="dropdown open">
-        <div className="dropdown-menu" style={dropdowns}>
-          {resultNodes}
-        </div>
+      <div className="dropdown-menu" style={dropdowns}>
+      {resultNodes}
+      </div>
       </div>
     );
   }
 });
 
-var SearchInput = React.createClass({
-  render: function () {
-    return (
-      <input className="form-control" type="text" placeholder="Search for a City" style={searchBar} value={this.props.value} onChange={this.props.action}/>
-    );
-  }
-});
-
+//value entered in search bar triggers api with resutls
 var SearchCity = React.createClass ({
   getInitialState: function() {
     return {
@@ -149,57 +165,53 @@ var SearchCity = React.createClass ({
   render: function() {
     return (
       <div>
-        <SearchInput value={this.state.value} action={this.handleChange} />
-        <Results data={this.state.results} />
+      <SearchInput value={this.state.value} action={this.handleChange} />
+      <Results data={this.state.results} />
       </div>
     )
   }
 });
 
-var CityName = React.createClass({
-  render: function () {
-    return (
-      <p style={titleStyle} className="city"> {this.props.city} </p>
-    );
-  }
-});
+//rendering cityname
+function CityName (props) {
+  return (
+    <p style={titleStyle} className="city"> {props.city} </p>
+  );
+}
 
-var CityTemp = React.createClass({
-  render: function () {
-    return (
-      <div style={weatherStyle}>
-      <span className="temp-number">{this.props.temperature}&deg;</span>
-      </div>
-    );
-  }
-});
+//rendering citytemp
+function CityTemp (props) {
+  return (
+    <div style={weatherStyle}>
+    <span className="temp-number">{props.temperature}&deg;</span>
+    </div>
+  );
+}
 
-var CityWeather = React.createClass({
-  render: function () {
-    var weatherClass = ('wi wi-wu-' + this.props.weather.replace(/\s/g, '').toLowerCase());
+//rendering cityweather
+function CityWeather (props) {
+  var weatherClass = ('wi wi-wu-' + props.weather.replace(/\s/g, '').toLowerCase());
+  return (
+    <div className="weather" style={weatherStyle}>
+    <i className={weatherClass}></i>
+    </div>
+  );
+}
 
-    return (
-      <div className="weather" style={weatherStyle}>
-      <i className={weatherClass}></i>
-      </div>
-    );
-  }
-});
-
-var Cities =  React.createClass({
-  render: function(){
-    var cityNodes = this.props.data.map(function(city){
+//rendering citycards
+function Cities (props){
+    var cityNodes = props.data.map(function(city){
       var tempRounded = Math.round(city.data.current_observation.temp_c)
       getBoxStyle(tempRounded)
       return(
         <Masonry
-                className="col-md-3"
-                elementType={'div'}
-                options={masonryOptions}
-                disableImagesLoaded={false}
-                updateOnEachImageLoad={false}
-                style={boxStyle}
-                key={city.data.current_observation.display_location.city}>
+        className="col-md-3"
+        elementType={'div'}
+        options={masonryOptions}
+        disableImagesLoaded={false}
+        updateOnEachImageLoad={false}
+        style={boxStyle}
+        key={city.data.current_observation.display_location.city}>
         < CityName city={city.data.current_observation.display_location.city}/>
         < CityWeather weather={city.data.current_observation.weather}/>
         < CityTemp temperature={tempRounded}/>
@@ -211,23 +223,9 @@ var Cities =  React.createClass({
       {cityNodes}
       </div>
     );
-  }
-});
+  };
 
-var Navbar = React.createClass({
-  render: function(){
-    return(
-      <div>
-        <div className="navbar navbar-dark bg-inverse" style={navbar}>
-        <CurrentTime UTCOffset="1" />
-          <SearchCity />
-        </div>
-          {this.props.children}
-      </div>
-    )
-  }
-});
-
+// homepage component
 var Home = React.createClass({
   getInitialState: function() {
     return {
