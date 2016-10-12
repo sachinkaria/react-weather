@@ -36,4 +36,4 @@ A beautiful, interactive weather dashboard giving a user the weather in their fa
 
 #### Screenshot
 
-![alt tag](http://i.imgur.com/xVfD5Am.png)
+![alt tag](http://i.imgur.com/gwNF9eP.png)
