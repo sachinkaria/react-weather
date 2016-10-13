@@ -174,7 +174,7 @@ function CityName (props) {
 //rendering citytemp
 function CityTemp (props) {
   return (
-    <div style={weatherStyle}>
+    <div style={styleHelpers.weatherStyle()}>
     <span className="temp-number">{props.temperature}&deg;</span>
     </div>
   );
@@ -184,7 +184,7 @@ function CityTemp (props) {
 function CityWeather (props) {
   var weatherClass = ('wi wi-wu-' + props.weather.replace(/\s/g, '').toLowerCase());
   return (
-    <div className="weather" style={weatherStyle}>
+    <div className="weather" style={styleHelpers.weatherStyle()}>
     <i className={weatherClass}></i>
     </div>
   );
