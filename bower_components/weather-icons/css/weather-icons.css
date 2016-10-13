@@ -1809,6 +1809,9 @@
 .wi-wu-haze:before {
   content: "\f0b6";
 }
+.wi-wu-overcast:before {
+  content: "\f0b6";
+}
 .wi-wu-mostlycloudy:before {
   content: "\f002";
 }

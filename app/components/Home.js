@@ -4,48 +4,7 @@ var apiHelpers = require('../utils/apiHelpers');
 var classNames = require('classnames');
 var Masonry = require('react-masonry-component');
 var weatherData = [];
-
-//styling
-var masonryOptions = {
-  transitionDuration: 1
-};
-var weatherStyle={color: "White",
-fontSize: "70px",
-margin:"0 auto",
-maxWidth: "100%",
-minWidth:"100%",
-maxHeight:"50%",
-float:"left",
-textAlign: "center",
-paddingBottom: "10px"
-};
-
-// var boxStyle = {backgroundColor: "blue"}
-
-var cityTime = {color: "White",
-float: "right",
-fontSize: "50px"}
-
-var dropdowns = {color: "White",
-backgroundColor: "#222",
-float: "left",
-fontSize: "20px",
-marginRight: "30px",
-textAlign: "center"}
-
-var navbar = {marginBottom: "50px"}
-var searchBar = {backgroundColor: "#373737",
-borderColor:"#373737",
-color:"white",
-fontSize: "20px"}
-
-var titleStyle={color:"white",
-textAlign:"center",
-minWidth:"100%",
-maxWidth:"100%",
-padding:"20px",
-fontSize:"40px"}
-
+var masonryOptions = {transitionDuration: 1};
 //current time component
 var CurrentTime = React.createClass({
   setTime: function(){
@@ -81,7 +40,7 @@ var CurrentTime = React.createClass({
   render: function() {
     return(
       <div>
-      <span style={cityTime}>{this.state.hours}:{this.state.minutes}</span>
+      <span style={styleHelpers.cityTime()}>{this.state.hours}:{this.state.minutes}</span>
       </div>
     )
   }
@@ -90,7 +49,7 @@ var CurrentTime = React.createClass({
 // search bar
 function SearchInput (props) {
   return (
-    <input className="form-control" type="text" placeholder="Search for a City" style={searchBar} value={props.value} onChange={props.action}/>
+    <input className="form-control" type="text" placeholder="Search for a City" style={styleHelpers.searchBar()} value={props.value} onChange={props.action}/>
   );
 }
 
@@ -98,7 +57,7 @@ function SearchInput (props) {
 function Navbar (props){
   return(
     <div>
-    <div className="navbar navbar-dark bg-inverse" style={navbar}>
+    <div className="navbar navbar-dark bg-inverse" style={styleHelpers.navbar()}>
     <CurrentTime UTCOffset="1" />
     <SearchCity />
     </div>
@@ -126,12 +85,12 @@ var Results =  React.createClass({
     var resultNodes = this.props.data.map(function(result){
       var urlString = result.l
       return(
-        <a href="#" key={result.l} style={dropdowns} onClick={() => {this.fetchData(urlString)}} className="dropdown-item"> {result.name} </a>
+        <a href="#" key={result.l} style={styleHelpers.dropdowns()} onClick={() => {this.fetchData(urlString)}} className="dropdown-item"> {result.name} </a>
       );
     }.bind(this));
     return (
       <div className="dropdown open">
-      <div className="dropdown-menu" style={dropdowns}>
+      <div className="dropdown-menu" style={styleHelpers.dropdowns()}>
       {resultNodes}
       </div>
       </div>
@@ -167,7 +126,7 @@ var SearchCity = React.createClass ({
 //rendering cityname
 function CityName (props) {
   return (
-    <p style={titleStyle} className="city"> {props.city} </p>
+    <p style={styleHelpers.titleStyle()} className="city"> {props.city} </p>
   );
 }
 
