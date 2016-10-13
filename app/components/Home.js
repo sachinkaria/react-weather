@@ -1,5 +1,6 @@
 var React = require('react');
-var apiHelpers = require('../utils/apiHelpers')
+var styleHelpers = require('../utils/styleHelpers');
+var apiHelpers = require('../utils/apiHelpers');
 var classNames = require('classnames');
 var Masonry = require('react-masonry-component');
 var weatherData = [];
@@ -19,7 +20,7 @@ textAlign: "center",
 paddingBottom: "10px"
 };
 
-var boxStyle = {backgroundColor: "blue"}
+// var boxStyle = {backgroundColor: "blue"}
 
 var cityTime = {color: "White",
 float: "right",
@@ -44,15 +45,6 @@ minWidth:"100%",
 maxWidth:"100%",
 padding:"20px",
 fontSize:"40px"}
-
-// dynamic style rendering background colour based on temperature
-function getBoxStyle(temperature){
-  if (temperature < 5) {boxStyle = {backgroundColor: "#417BFF", opacity: 0.9, borderRadius:"5px", minHeight:"300px", borderStyle:"solid", borderColor:"#222", borderThickness:"thin"}}
-  else if (temperature < 15) {boxStyle = {backgroundColor: "#799AF4", opacity: 0.9, borderRadius:"5px", minHeight:"300px", borderStyle:"solid", borderColor:"#222", borderThickness:"thin"}}
-  else if (temperature < 22) {boxStyle = {backgroundColor: "#FFAC63", opacity: 0.9, borderRadius:"5px", minHeight:"300px", borderStyle:"solid", borderColor:"#222", borderThickness:"thin"}}
-  else if (temperature < 30) {boxStyle = {backgroundColor: "#FF6F39", opacity: 0.9, borderRadius:"5px", minHeight:"300px", borderStyle:"solid", borderColor:"#222", borderThickness:"thin"}}
-  else {boxStyle = {backgroundColor: "#EA4145", opacity: 0.9, borderRadius:"5px", borderStyle:"solid", borderColor:"#222", borderThickness:"thin"}}
-};
 
 //current time component
 var CurrentTime = React.createClass({
@@ -202,7 +194,6 @@ function CityWeather (props) {
 function Cities (props){
     var cityNodes = props.data.map(function(city){
       var tempRounded = Math.round(city.data.current_observation.temp_c)
-      getBoxStyle(tempRounded)
       return(
         <Masonry
         className="col-md-3"
@@ -210,7 +201,7 @@ function Cities (props){
         options={masonryOptions}
         disableImagesLoaded={false}
         updateOnEachImageLoad={false}
-        style={boxStyle}
+        style={styleHelpers.getBoxStyle(tempRounded)}
         key={city.data.current_observation.display_location.city}>
         < CityName city={city.data.current_observation.display_location.city}/>
         < CityWeather weather={city.data.current_observation.weather}/>
