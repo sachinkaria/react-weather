@@ -1,7 +1,7 @@
 var React = require('react');
 var apiHelpers = require('../utils/apiHelpers')
 var classNames = require('classnames');
-var Masonry = require('react-masonry-component');
+// var Masonry = require('react-masonry-component');
 var weatherData = [];
 
 //styling
@@ -204,7 +204,7 @@ function Cities (props){
       var tempRounded = Math.round(city.data.current_observation.temp_c)
       getBoxStyle(tempRounded)
       return(
-        <Masonry
+        <div
         className="col-md-3"
         elementType={'div'}
         options={masonryOptions}
@@ -215,7 +215,7 @@ function Cities (props){
         < CityName city={city.data.current_observation.display_location.city}/>
         < CityWeather weather={city.data.current_observation.weather}/>
         < CityTemp temperature={tempRounded}/>
-        </Masonry>
+        </div>
       );
     });
     return (
